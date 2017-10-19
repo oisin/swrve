@@ -7,15 +7,14 @@ module Swrve
 
       extend Forwardable
 
-      attr_accessor :client
+      attr_accessor :connection
 
       def_instance_delegators :@client, :get, :post, :put
 
       def initialize(endpoint)
-        @client = Faraday.new(endpoint) do |faraday|
-          faraday.request :url_encoded
-          faraday.adapter Swrve.config.http_adapter
-          faraday.use FaradayMiddleware::ParseJson
+        @connection = Faraday.new(endpoint) do |conn|
+          conn.request :url_encoded
+          conn.adapter Faraday.default_adapter
         end
       end
     end

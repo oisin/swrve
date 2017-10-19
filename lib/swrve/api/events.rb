@@ -87,7 +87,7 @@ module Swrve
       end
 
       def query_options(uuid, payload = {})
-        { api_key: @api_key, app_version: @app_version, user: uuid }.merge(payload) 
+        { api_key: @api_key, app_version: @app_version, user: uuid, client_time: (Time.now.utc.to_f * 1000).to_i}.merge(payload) 
       end
 
       #The swrve api does not accept nul JSON values
