@@ -18,14 +18,15 @@ describe Swrve do
 
   describe ".config" do
     it 'is a configuration' do
-      Swrve.config.should be_a(Swrve::Configuration)
+      expect(Swrve.config).to be_a(Swrve::Configuration)
     end
 
     it 'responds to required configurations' do
-      [:ab_test_url, :api_url, :app_version, :api_key, :local_resource_path, :game_id,
+      cfgs = [:ab_test_url, :api_url, :app_version, :api_key, :local_resource_path, :game_id,
        :load_local_resources, :debug, :http_adapter].map do |value|
         Swrve.config.respond_to?(value)
-      end.uniq.should == [true]
+      end
+      expect(cfgs.uniq).to eq([true])
     end
   end
 
@@ -34,13 +35,13 @@ describe Swrve do
     before { Swrve.configure { |config| config.app_version = '11' }}
 
     it 'should be configurable' do
-      Swrve.config.app_version.should == '11'
+      expect(Swrve.config.app_version).to eq('11')
     end
 
   end
 
   it "has a version" do
-    Swrve::VERSION.should be_a(String)
+    expect(Swrve::VERSION).to be_a(String)
   end
 
   describe 'methods_delegated to event_sender' do
@@ -51,8 +52,8 @@ describe Swrve do
     ]
 
     @delegated_events.each do |event|
-      specify { subject.should respond_to(event) }
-      specify { event_sender.should respond_to(event) }
+      specify { expect(subject).respond_to?(event) }
+      specify { expect(event_sender).respond_to?(event) }
 
       it "send the #{event} request to the resources endpoint" do
         event_sender.expects(event)
@@ -68,8 +69,8 @@ describe Swrve do
     @delegated_events = [:resource, :resources_diff, :resources]
 
     @delegated_events.each do |event|
-      specify { subject.should respond_to(event) }
-      specify { resource_getter.should respond_to(event) }
+      specify { expect(subject).respond_to?(event) }
+      specify { expect(resource_getter).respond_to?(event) }
 
       it "send the #{event} request to the resources endpoint" do
         resource_getter.expects(event)
